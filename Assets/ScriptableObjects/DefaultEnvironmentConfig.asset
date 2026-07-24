@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00000000000000000000000000000000, type: 3}
+  m_Name: DefaultEnvironmentConfig
+  defaultTimeOfDay: 0
+  dayCycleDurationMinutes: 24
+  morningSunIntensity: 1.2
+  noonSunIntensity: 1.5
+  eveningSunIntensity: 0.8
+  nightSunIntensity: 0.1
+  defaultWeather: 0
+  baseWindSpeed: 3.5
+  defaultWindDirection: {x: 1, y: 0, z: 0.5}
+  fogDensity: 0.03
+  freeCamMoveSpeed: 15
+  freeCamFastMoveSpeed: 35
+  freeCamLookSensitivity: 2
+  cinematicWaypointTransitionDuration: 6
