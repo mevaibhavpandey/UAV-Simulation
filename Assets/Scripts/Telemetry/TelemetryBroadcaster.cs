@@ -1,10 +1,12 @@
-using ASTRA.UAV.Core;
+using System;
 using UnityEngine;
+using ASTRA.UAV.Core;
+using ASTRA.UAV.Interfaces;
 
 namespace ASTRA.UAV.Telemetry
 {
     /// <summary>
-    /// Connects to an <see cref="ITelemetryProvider"/> and broadcasts <see cref="TelemetryData"/> updates globally via <see cref="EventBus"/>.
+    /// Connects to an <see cref="ITelemetryProvider"/> and broadcasts <see cref="TelemetrySnapshot"/> updates globally via <see cref="EventBus"/>.
     /// </summary>
     public class TelemetryBroadcaster : MonoBehaviour
     {
@@ -45,10 +47,9 @@ namespace ASTRA.UAV.Telemetry
             }
         }
 
-        private void HandleTelemetryUpdated(TelemetryData data)
+        private void HandleTelemetryUpdated(TelemetrySnapshot snapshot)
         {
-            // Publish snapshot over static decoupled EventBus
-            EventBus.Publish(data);
+            EventBus.Publish(snapshot);
         }
     }
 }
