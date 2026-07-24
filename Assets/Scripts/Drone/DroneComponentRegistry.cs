@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using ASTRA.UAV.Interfaces;
 
 namespace ASTRA.UAV.Drone
 {

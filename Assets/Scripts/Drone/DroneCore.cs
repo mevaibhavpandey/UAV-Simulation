@@ -7,6 +7,7 @@
 using System;
 using UnityEngine;
 using ASTRA.UAV.Physics;
+using ASTRA.UAV.Interfaces;
 
 namespace ASTRA.UAV.Drone
 {

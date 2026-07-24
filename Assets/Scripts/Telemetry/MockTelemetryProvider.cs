@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using ASTRA.UAV.Interfaces;
 
 namespace ASTRA.UAV.Telemetry
 {
