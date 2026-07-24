@@ -22,7 +22,7 @@ namespace ASTRA.UAV.UI
         [SerializeField] private MissionPlanner missionPlanner;
         [SerializeField] private MissionExecutor missionExecutor;
 
-        private Mission currentWorkingMission;
+        private ASTRA.UAV.Mission.Mission currentWorkingMission;
 
         private void Start()
         {
@@ -34,84 +34,67 @@ namespace ASTRA.UAV.UI
         /// </summary>
         public void CreateNewMission()
         {
-            currentWorkingMission = ScriptableObject.CreateInstance<Mission>();
+            currentWorkingMission = ScriptableObject.CreateInstance<ASTRA.UAV.Mission.Mission>();
             currentWorkingMission.MissionName = "New Flight Mission";
             UpdateUI();
         }
 
         /// <summary>
-        /// Adds a sample waypoint to the mission plan.
+        /// Adds a waypoint at the current camera target position.
         /// </summary>
-        public void AddSampleWaypoint()
+        public void AddWaypointAtTarget()
         {
             if (currentWorkingMission == null) CreateNewMission();
 
-            float alt = 15f;
-            if (altitudeInput != null && float.TryParse(altitudeInput.text, out float userAlt))
+            float alt = float.TryParse(altitudeInput != null ? altitudeInput.text : "20", out float a) ? a : 20f;
+            float spd = float.TryParse(speedInput != null ? speedInput.text : "5", out float s) ? s : 5f;
+
+            Vector3 nextPos = Vector3.zero;
+            if (currentWorkingMission.Waypoints.Count > 0)
             {
-                alt = userAlt;
+                Vector3 last = currentWorkingMission.Waypoints[currentWorkingMission.Waypoints.Count - 1].LocalPosition;
+                nextPos = last + new Vector3(20f, 0f, 20f);
             }
+            nextPos.y = alt;
 
-            float speed = 5f;
-            if (speedInput != null && float.TryParse(speedInput.text, out float userSpeed))
-            {
-                speed = userSpeed;
-            }
-
-            int count = currentWorkingMission.Waypoints.Count;
-            Vector3 pos = new Vector3(count * 20f, alt, count * 15f);
-
-            WaypointAction action = (count == 0) ? WaypointAction.Takeoff : WaypointAction.FlyThrough;
-            currentWorkingMission.AddWaypoint(new Waypoint(pos, speed, 0f, action));
-
+            Waypoint wp = new Waypoint(nextPos, spd);
+            currentWorkingMission.AddWaypoint(wp);
             UpdateUI();
         }
 
         /// <summary>
-        /// Validates current mission and displays status.
+        /// Clears all waypoints from current mission.
         /// </summary>
-        public void ValidateMission()
+        public void ClearWaypoints()
         {
-            if (currentWorkingMission == null) return;
-
-            bool valid = currentWorkingMission.ValidateMission(out var errors);
-            if (valid)
+            if (currentWorkingMission != null)
             {
-                if (statusText != null) statusText.text = "<color=green>Mission Validated Successfully!</color>";
-            }
-            else
-            {
-                if (statusText != null) statusText.text = $"<color=red>Validation Error: {errors[0]}</color>";
+                currentWorkingMission.Waypoints.Clear();
+                UpdateUI();
             }
         }
 
         /// <summary>
-        /// Uploads mission to active MissionExecutor.
+        /// Validates current mission and uploads to MissionExecutor.
         /// </summary>
-        public void UploadToUAV()
+        public void UploadMissionToFlightComputer()
         {
-            if (currentWorkingMission == null || missionExecutor == null)
+            if (currentWorkingMission == null || currentWorkingMission.Waypoints.Count == 0)
             {
-                if (statusText != null) statusText.text = "<color=yellow>Upload Failed: Executor missing.</color>";
+                if (statusText != null) statusText.text = "Error: No waypoints to upload!";
                 return;
             }
 
-            bool success = missionExecutor.LoadMission(currentWorkingMission);
-            if (success)
+            if (missionExecutor != null)
             {
-                if (statusText != null) statusText.text = "<color=green>Uploaded to UAV Flight Computer!</color>";
-            }
-            else
-            {
-                if (statusText != null) statusText.text = "<color=red>Upload Failed: Invalid mission.</color>";
+                missionExecutor.LoadMission(currentWorkingMission);
+                if (statusText != null) statusText.text = "Mission Uploaded Successfully!";
             }
         }
 
         private void UpdateUI()
         {
             if (currentWorkingMission == null) return;
-
-            if (missionNameInput != null) missionNameInput.text = currentWorkingMission.MissionName;
             if (waypointCountText != null) waypointCountText.text = $"Waypoints: {currentWorkingMission.Waypoints.Count}";
         }
     }

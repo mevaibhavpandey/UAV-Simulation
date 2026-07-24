@@ -4,6 +4,11 @@ using System.Collections.Generic;
 namespace ASTRA.UAV.Core
 {
     /// <summary>
+    /// Base marker interface for all strongly-typed event payloads passed via EventBus.
+    /// </summary>
+    public interface IEvent { }
+
+    /// <summary>
     /// Lightweight global publish-subscribe Event Bus for decoupling system events across UAV layers.
     /// </summary>
     public static class EventBus

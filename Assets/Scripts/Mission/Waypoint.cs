@@ -97,4 +97,30 @@ namespace ASTRA.UAV.Mission
             return Vector3.Distance(LocalPosition, other.LocalPosition);
         }
     }
+
+    /// <summary>
+    /// Alias struct for Waypoint data representation in Mission Planner UI.
+    /// </summary>
+    [Serializable]
+    public struct WaypointData
+    {
+        public double Latitude;
+        public double Longitude;
+        public float Altitude;
+        public float TargetSpeed;
+        public float HoldTime;
+        public WaypointAction Action;
+        public Vector3 LocalPosition;
+
+        public WaypointData(Vector3 localPosition, float targetSpeed = 5f, float holdTime = 0f, WaypointAction action = WaypointAction.FlyThrough)
+        {
+            Latitude = 0.0;
+            Longitude = 0.0;
+            Altitude = localPosition.y;
+            TargetSpeed = Mathf.Max(0.5f, targetSpeed);
+            HoldTime = Mathf.Max(0f, holdTime);
+            Action = action;
+            LocalPosition = localPosition;
+        }
+    }
 }
