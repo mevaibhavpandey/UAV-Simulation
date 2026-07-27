@@ -6,7 +6,7 @@ namespace ASTRA.UAV.AI
     /// <summary>
     /// Abstract base class implementing lifecycle logic and error handling for UAV AI submodules.
     /// </summary>
-    public abstract class AIModuleBase : MonoBehaviour, IAIModule
+    public abstract class AIModuleBase : MonoBehaviour
     {
         [Header("Module Base Settings")]
         [SerializeField] protected string moduleName = "Generic AI Module";

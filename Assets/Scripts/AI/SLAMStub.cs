@@ -7,7 +7,7 @@ namespace ASTRA.UAV.AI
     /// <summary>
     /// Phase 3 GPS-denied Visual-Inertial Odometry (VIO / SLAM) Stub provider for precise local localization without GPS lock.
     /// </summary>
-    public class SLAMStub : AIModuleBase, ISLAMProvider
+    public class SLAMStub : AIModuleBase
     {
         [Header("SLAM Parameters")]
         [SerializeField] private bool isTracking = true;
