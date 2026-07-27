@@ -108,7 +108,7 @@ namespace ASTRA.UAV.Telemetry
         [Serializable]
         private class TelemetryContainer
         {
-            public List<TelemetryData> Frames;
+            public List<TelemetrySnapshot> Frames;
         }
     }
 }
