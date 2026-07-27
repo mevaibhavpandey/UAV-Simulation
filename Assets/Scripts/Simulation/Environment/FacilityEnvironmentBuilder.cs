@@ -78,53 +78,32 @@ namespace ASTRA.UAV.Simulation.Environment
             return go;
         }
 
+        private Material CreateColorMat(Color color, string name)
+        {
+            Texture2D tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, color);
+            tex.Apply();
+
+            Shader s = Shader.Find("Unlit/Texture");
+            if (s == null) s = Shader.Find("Sprites/Default");
+            if (s == null) s = Shader.Find("Unlit/Color");
+
+            Material mat = new Material(s) { name = name };
+            mat.mainTexture = tex;
+            mat.color = color;
+            return mat;
+        }
+
         private void CreateDefaultMaterials()
         {
-            Shader litShader = Shader.Find("Sprites/Default");
-            if (litShader == null) litShader = Shader.Find("Unlit/Color");
-            if (litShader == null) litShader = Shader.Find("Universal Render Pipeline/Unlit");
-            if (litShader == null) litShader = Shader.Find("Standard");
-
-            if (asphaltMaterial == null)
-            {
-                asphaltMaterial = new Material(litShader) { name = "Mat_Asphalt" };
-                asphaltMaterial.color = new Color(0.15f, 0.16f, 0.18f);
-            }
-            if (concreteMaterial == null)
-            {
-                concreteMaterial = new Material(litShader) { name = "Mat_Concrete" };
-                concreteMaterial.color = new Color(0.65f, 0.67f, 0.70f);
-            }
-            if (whiteMarkingMaterial == null)
-            {
-                whiteMarkingMaterial = new Material(litShader) { name = "Mat_WhiteMarking" };
-                whiteMarkingMaterial.color = Color.white;
-            }
-            if (yellowMarkingMaterial == null)
-            {
-                yellowMarkingMaterial = new Material(litShader) { name = "Mat_YellowMarking" };
-                yellowMarkingMaterial.color = new Color(1.0f, 0.82f, 0.0f);
-            }
-            if (grassMaterial == null)
-            {
-                grassMaterial = new Material(litShader) { name = "Mat_Grass" };
-                grassMaterial.color = new Color(0.22f, 0.42f, 0.18f);
-            }
-            if (waterMaterial == null)
-            {
-                waterMaterial = new Material(litShader) { name = "Mat_Water" };
-                waterMaterial.color = new Color(0.12f, 0.35f, 0.55f, 0.8f);
-            }
-            if (buildingMaterial == null)
-            {
-                buildingMaterial = new Material(litShader) { name = "Mat_BuildingConcrete" };
-                buildingMaterial.color = new Color(0.85f, 0.87f, 0.90f);
-            }
-            if (fenceMaterial == null)
-            {
-                fenceMaterial = new Material(litShader) { name = "Mat_FenceWire" };
-                fenceMaterial.color = new Color(0.4f, 0.42f, 0.45f);
-            }
+            if (asphaltMaterial == null) asphaltMaterial = CreateColorMat(new Color(0.12f, 0.13f, 0.15f), "Mat_Asphalt");
+            if (concreteMaterial == null) concreteMaterial = CreateColorMat(new Color(0.40f, 0.42f, 0.45f), "Mat_Concrete");
+            if (whiteMarkingMaterial == null) whiteMarkingMaterial = CreateColorMat(Color.white, "Mat_WhiteMarking");
+            if (yellowMarkingMaterial == null) yellowMarkingMaterial = CreateColorMat(new Color(1.0f, 0.82f, 0.0f), "Mat_YellowMarking");
+            if (grassMaterial == null) grassMaterial = CreateColorMat(new Color(0.22f, 0.38f, 0.18f), "Mat_Grass");
+            if (waterMaterial == null) waterMaterial = CreateColorMat(new Color(0.12f, 0.35f, 0.55f, 0.8f), "Mat_Water");
+            if (buildingMaterial == null) buildingMaterial = CreateColorMat(new Color(0.45f, 0.48f, 0.52f), "Mat_BuildingConcrete");
+            if (fenceMaterial == null) fenceMaterial = CreateColorMat(new Color(0.4f, 0.42f, 0.45f), "Mat_FenceWire");
         }
 
         private void BuildTerrainAndWater(GameObject parent)

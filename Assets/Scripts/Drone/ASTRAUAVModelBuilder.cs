@@ -229,48 +229,34 @@ namespace ASTRA.UAV.Drone
             return comp;
         }
 
+        private Material CreateColorMat(Color color, string name)
+        {
+            Texture2D tex = new Texture2D(1, 1);
+            tex.SetPixel(0, 0, color);
+            tex.Apply();
+
+            Shader s = Shader.Find("Unlit/Texture");
+            if (s == null) s = Shader.Find("Sprites/Default");
+            if (s == null) s = Shader.Find("Unlit/Color");
+
+            Material mat = new Material(s) { name = name };
+            mat.mainTexture = tex;
+            mat.color = color;
+            return mat;
+        }
+
         private void CreateMaterials()
         {
-            Shader litShader = Shader.Find("Sprites/Default");
-            if (litShader == null) litShader = Shader.Find("Unlit/Color");
-            if (litShader == null) litShader = Shader.Find("Universal Render Pipeline/Unlit");
-            if (litShader == null) litShader = Shader.Find("Standard");
-
-            if (carbonFiberMaterial == null)
-            {
-                carbonFiberMaterial = new Material(litShader) { name = "Mat_CarbonFiber" };
-                carbonFiberMaterial.color = new Color(0.12f, 0.13f, 0.15f);
-            }
-            if (aluminiumRedMaterial == null)
-            {
-                aluminiumRedMaterial = new Material(litShader) { name = "Mat_AnodizedAluminium_Red" };
-                aluminiumRedMaterial.color = new Color(0.85f, 0.1f, 0.12f);
-            }
-            if (aluminiumBlackMaterial == null)
-            {
-                aluminiumBlackMaterial = new Material(litShader) { name = "Mat_AnodizedAluminium_Black" };
-                aluminiumBlackMaterial.color = new Color(0.08f, 0.08f, 0.10f);
-            }
-            if (pcbGreenMaterial == null)
-            {
-                pcbGreenMaterial = new Material(litShader) { name = "Mat_PCB_Green" };
-                pcbGreenMaterial.color = new Color(0.05f, 0.45f, 0.15f);
-            }
-            if (lipoBatteryMaterial == null)
-            {
-                lipoBatteryMaterial = new Material(litShader) { name = "Mat_6S_LiPo" };
-                lipoBatteryMaterial.color = new Color(0.95f, 0.75f, 0.05f);
-            }
-            if (propellerMaterial == null)
-            {
-                propellerMaterial = new Material(litShader) { name = "Mat_PropellerCarbon" };
-                propellerMaterial.color = new Color(0.18f, 0.19f, 0.22f);
-            }
+            if (carbonFiberMaterial == null) carbonFiberMaterial = CreateColorMat(new Color(0.12f, 0.13f, 0.15f), "Mat_CarbonFiber");
+            if (aluminiumRedMaterial == null) aluminiumRedMaterial = CreateColorMat(new Color(0.85f, 0.1f, 0.12f), "Mat_AnodizedAluminium_Red");
+            if (aluminiumBlackMaterial == null) aluminiumBlackMaterial = CreateColorMat(new Color(0.08f, 0.08f, 0.10f), "Mat_AnodizedAluminium_Black");
+            if (pcbGreenMaterial == null) pcbGreenMaterial = CreateColorMat(new Color(0.05f, 0.45f, 0.15f), "Mat_PCB_Green");
+            if (lipoBatteryMaterial == null) lipoBatteryMaterial = CreateColorMat(new Color(0.95f, 0.75f, 0.05f), "Mat_6S_LiPo");
+            if (propellerMaterial == null) propellerMaterial = CreateColorMat(new Color(0.18f, 0.18f, 0.20f, 0.9f), "Mat_Propeller");
+            if (glassMaterial == null) glassMaterial = CreateColorMat(new Color(0.2f, 0.6f, 0.9f, 0.4f), "Mat_Glass");
+            if (ledRedMaterial == null) ledRedMaterial = CreateColorMat(new Color(1.0f, 0.05f, 0.05f), "Mat_LED_Red");
+            if (ledGreenMaterial == null) ledGreenMaterial = CreateColorMat(new Color(0.05f, 1.0f, 0.1f), "Mat_LED_Green");
         }
     }
-}
-
-
-
 
 

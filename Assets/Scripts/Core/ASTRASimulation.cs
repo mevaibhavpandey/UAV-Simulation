@@ -1049,12 +1049,17 @@ namespace ASTRA.UAV.Core
             Renderer r = go.GetComponent<Renderer>();
             if (r != null)
             {
-                Shader shader = Shader.Find("Sprites/Default");
+                Texture2D tex = new Texture2D(1, 1);
+                tex.SetPixel(0, 0, color);
+                tex.Apply();
+
+                Shader shader = Shader.Find("Unlit/Texture");
+                if (shader == null) shader = Shader.Find("Sprites/Default");
                 if (shader == null) shader = Shader.Find("Unlit/Color");
-                if (shader == null) shader = Shader.Find("Universal Render Pipeline/Unlit");
-                if (shader == null) shader = Shader.Find("Standard");
+                if (shader == null) shader = Shader.Find("UI/Default");
 
                 Material mat = new Material(shader);
+                mat.mainTexture = tex;
                 mat.color = color;
                 if (mat.HasProperty("_Color")) mat.SetColor("_Color", color);
                 if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", color);
