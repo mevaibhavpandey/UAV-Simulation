@@ -38,7 +38,7 @@ namespace ASTRA.UAV.Drone
 
             if (impactVel > crashVelocityThreshold)
             {
-                Debug.LogWarning($"CRASH DETECTED! Impact velocity: {impactVel:F1} m/s with {collision.gameObject.name}", LogCategory.Drone);
+                UAVLogger.LogWarning($"CRASH DETECTED! Impact velocity: {impactVel:F1} m/s with {collision.gameObject.name}");
 
                 if (flightController != null)
                 {
@@ -55,6 +55,7 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
 
 
 

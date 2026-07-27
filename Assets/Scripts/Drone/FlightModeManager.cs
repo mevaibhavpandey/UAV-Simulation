@@ -51,7 +51,7 @@ namespace ASTRA.UAV.Drone
             // Safety rules: Cannot enter active flight modes if disarmed
             if (!isArmed && newMode != FlightModeType.Disarmed && newMode != FlightModeType.Armed)
             {
-                Debug.LogWarning($"Cannot switch to {newMode} while UAV is Disarmed!", LogCategory.Drone);
+                UAVLogger.LogWarning($"Cannot switch to {newMode} while UAV is Disarmed!");
                 return false;
             }
 
@@ -64,7 +64,7 @@ namespace ASTRA.UAV.Drone
                 NewMode = newMode
             });
 
-            Debug.Log($"Flight Mode changed from {oldMode} to {newMode}", LogCategory.Drone);
+            UAVLogger.Log($"Flight Mode changed from {oldMode} to {newMode}");
             return true;
         }
 
@@ -77,7 +77,7 @@ namespace ASTRA.UAV.Drone
 
             isArmed = true;
             SetFlightMode(FlightModeType.Armed);
-            Debug.Log("UAV Motors ARMED successfully.", LogCategory.Drone);
+            UAVLogger.Log("UAV Motors ARMED successfully.");
             return true;
         }
 
@@ -88,7 +88,7 @@ namespace ASTRA.UAV.Drone
         {
             isArmed = false;
             SetFlightMode(FlightModeType.Disarmed);
-            Debug.Log("UAV Motors DISARMED.", LogCategory.Drone);
+            UAVLogger.Log("UAV Motors DISARMED.");
         }
 
         /// <summary>
@@ -101,6 +101,7 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
 
 
 

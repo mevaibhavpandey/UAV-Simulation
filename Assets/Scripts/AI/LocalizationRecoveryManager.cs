@@ -71,7 +71,7 @@ namespace ASTRA.UAV.AI
         private void TriggerLocalizationRecovery()
         {
             isRecoveryActive = true;
-            Debug.LogWarning("LOCALIZATION TRACKING POOR/LOST! Engaging Hover & Landmark Recovery Search.", LogCategory.AI);
+            UAVLogger.LogWarning("LOCALIZATION TRACKING POOR/LOST! Engaging Hover & Landmark Recovery Search.");
 
             if (autopilot != null)
             {
@@ -83,10 +83,11 @@ namespace ASTRA.UAV.AI
         private void ResolveLocalizationRecovery()
         {
             isRecoveryActive = false;
-            Debug.Log("Localization Recovery Successful. Tracking quality restored.", LogCategory.AI);
+            UAVLogger.Log("Localization Recovery Successful. Tracking quality restored.");
         }
     }
 }
+
 
 
 

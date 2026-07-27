@@ -59,7 +59,7 @@ namespace ASTRA.UAV.Mission
             {
                 flightModeManager.SetFlightMode(FlightModeType.Manual);
             }
-            Debug.Log("Autopilot Disengaged. Handed over to Manual Mode.", LogCategory.Mission);
+            UAVLogger.Log("Autopilot Disengaged. Handed over to Manual Mode.");
         }
 
         private void FixedUpdate()
@@ -90,6 +90,7 @@ namespace ASTRA.UAV.Mission
         }
     }
 }
+
 
 
 

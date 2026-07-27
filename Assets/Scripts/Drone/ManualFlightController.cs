@@ -251,7 +251,7 @@ namespace ASTRA.UAV.Drone
             stateMachine.SetState(DroneOperationalState.EmergencyStop);
             throttleInput = 0f;
             isHoverActive = false;
-            Debug.LogWarning("EMERGENCY STOP TRIGGERED! Motor power cut.", LogCategory.Drone);
+            UAVLogger.LogWarning("EMERGENCY STOP TRIGGERED! Motor power cut.");
         }
 
         private float AngleNormalizer(float angle)
@@ -261,6 +261,7 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
 
 
 

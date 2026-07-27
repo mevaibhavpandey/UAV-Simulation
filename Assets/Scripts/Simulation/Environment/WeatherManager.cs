@@ -112,7 +112,7 @@ namespace ASTRA.UAV.Simulation.Environment
                 RainIntensity = rainIntensity
             });
 
-            Debug.Log($"Weather state changed from {oldState} to {newState}", LogCategory.Simulation);
+            UAVLogger.Log($"Weather state changed from {oldState} to {newState}");
         }
 
         private void ApplyWeatherState(WeatherState state)
@@ -193,6 +193,7 @@ namespace ASTRA.UAV.Simulation.Environment
         }
     }
 }
+
 
 
 

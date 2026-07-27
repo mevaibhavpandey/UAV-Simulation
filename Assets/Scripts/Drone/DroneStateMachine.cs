@@ -60,10 +60,11 @@ namespace ASTRA.UAV.Drone
                 NewState = newState
             });
 
-            Debug.Log($"Drone State transitioned: {oldState} -> {newState}", LogCategory.Drone);
+            UAVLogger.Log($"Drone State transitioned: {oldState} -> {newState}");
         }
     }
 }
+
 
 
 
