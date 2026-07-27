@@ -258,5 +258,6 @@ namespace ASTRA.UAV.Drone
             if (ledGreenMaterial == null) ledGreenMaterial = CreateColorMat(new Color(0.05f, 1.0f, 0.1f), "Mat_LED_Green");
         }
     }
+}
 
 
