@@ -231,7 +231,9 @@ namespace ASTRA.UAV.Drone
 
         private void CreateMaterials()
         {
-            Shader litShader = Shader.Find("Universal Render Pipeline/Lit");
+            Shader litShader = Shader.Find("Sprites/Default");
+            if (litShader == null) litShader = Shader.Find("Unlit/Color");
+            if (litShader == null) litShader = Shader.Find("Universal Render Pipeline/Unlit");
             if (litShader == null) litShader = Shader.Find("Standard");
 
             if (carbonFiberMaterial == null)

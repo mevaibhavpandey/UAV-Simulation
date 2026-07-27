@@ -80,7 +80,9 @@ namespace ASTRA.UAV.Simulation.Environment
 
         private void CreateDefaultMaterials()
         {
-            Shader litShader = Shader.Find("Universal Render Pipeline/Lit");
+            Shader litShader = Shader.Find("Sprites/Default");
+            if (litShader == null) litShader = Shader.Find("Unlit/Color");
+            if (litShader == null) litShader = Shader.Find("Universal Render Pipeline/Unlit");
             if (litShader == null) litShader = Shader.Find("Standard");
 
             if (asphaltMaterial == null)
