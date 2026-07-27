@@ -94,14 +94,14 @@ namespace ASTRA.UAV.Core
             ground.name = "Ground";
             ground.transform.localScale = new Vector3(100, 1, 100);
             ground.transform.position = Vector3.zero;
-            SetColor(ground, new Color(0.25f, 0.28f, 0.22f)); // military green-grey
+            SetColor(ground, new Color(0.22f, 0.38f, 0.18f)); // Realistic field green
 
-            // Runway (long dark strip)
+            // Runway (long dark asphalt strip)
             GameObject runway = GameObject.CreatePrimitive(PrimitiveType.Cube);
             runway.name = "Runway";
             runway.transform.position = new Vector3(0, 0.01f, 60f);
             runway.transform.localScale = new Vector3(15, 0.02f, 200);
-            SetColor(runway, new Color(0.15f, 0.15f, 0.15f));
+            SetColor(runway, new Color(0.12f, 0.13f, 0.15f));
 
             // Runway center line markings
             for (int i = -4; i <= 4; i++)
@@ -110,7 +110,7 @@ namespace ASTRA.UAV.Core
                 mark.name = "RunwayMark";
                 mark.transform.position = new Vector3(0, 0.02f, 60f + i * 20f);
                 mark.transform.localScale = new Vector3(0.5f, 0.02f, 8f);
-                SetColor(mark, Color.white);
+                SetColor(mark, new Color(0.95f, 0.95f, 0.95f));
                 Destroy(mark.GetComponent<Collider>());
             }
 
@@ -119,7 +119,7 @@ namespace ASTRA.UAV.Core
             helipad.name = "Helipad";
             helipad.transform.position = new Vector3(0, 0.05f, 0);
             helipad.transform.localScale = new Vector3(8, 0.05f, 8);
-            SetColor(helipad, new Color(0.1f, 0.1f, 0.12f));
+            SetColor(helipad, new Color(0.38f, 0.40f, 0.43f));
 
             // Helipad H marking
             for (int i = 0; i < 3; i++)
@@ -942,9 +942,15 @@ namespace ASTRA.UAV.Core
             Renderer r = go.GetComponent<Renderer>();
             if (r != null)
             {
-                Material mat = new Material(Shader.Find("Universal Render Pipeline/Lit")
-                    ?? Shader.Find("Standard"));
+                Shader shader = Shader.Find("Universal Render Pipeline/Lit");
+                if (shader == null) shader = Shader.Find("Universal Render Pipeline/Unlit");
+                if (shader == null) shader = Shader.Find("Unlit/Color");
+                if (shader == null) shader = Shader.Find("Sprites/Default");
+                if (shader == null) shader = Shader.Find("Standard");
+
+                Material mat = new Material(shader);
                 mat.color = color;
+                if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", color);
                 r.material = mat;
             }
         }
