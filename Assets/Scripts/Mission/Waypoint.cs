@@ -99,28 +99,49 @@ namespace ASTRA.UAV.Mission
     }
 
     /// <summary>
-    /// Alias struct for Waypoint data representation in Mission Planner UI.
+    /// Alias struct for Waypoint data — used in Mission Planner UI and GCS.
     /// </summary>
     [Serializable]
     public struct WaypointData
     {
-        public double Latitude;
-        public double Longitude;
-        public float Altitude;
-        public float TargetSpeed;
-        public float HoldTime;
-        public WaypointAction Action;
+        // Primary fields (used by GCSMissionPlannerUI)
+        public double latitude;
+        public double longitude;
+        public float  altitudeMSL;
+        public float  targetSpeed;
+        public float  holdDurationSeconds;
+        public WaypointActionType action;
+
+        // Convenience aliases
+        public double Latitude    { get => latitude;    set => latitude = value; }
+        public double Longitude   { get => longitude;   set => longitude = value; }
+        public float  Altitude    { get => altitudeMSL; set => altitudeMSL = value; }
+        public float  TargetSpeed { get => targetSpeed; set => targetSpeed = value; }
+        public float  HoldTime    { get => holdDurationSeconds; set => holdDurationSeconds = value; }
         public Vector3 LocalPosition;
 
-        public WaypointData(Vector3 localPosition, float targetSpeed = 5f, float holdTime = 0f, WaypointAction action = WaypointAction.FlyThrough)
+        public WaypointData(Vector3 localPosition, float speed = 5f, float hold = 0f)
         {
-            Latitude = 0.0;
-            Longitude = 0.0;
-            Altitude = localPosition.y;
-            TargetSpeed = Mathf.Max(0.5f, targetSpeed);
-            HoldTime = Mathf.Max(0f, holdTime);
-            Action = action;
-            LocalPosition = localPosition;
+            latitude           = 0.0;
+            longitude          = 0.0;
+            altitudeMSL        = localPosition.y;
+            targetSpeed        = Mathf.Max(0.5f, speed);
+            holdDurationSeconds = Mathf.Max(0f, hold);
+            action             = WaypointActionType.Hover;
+            LocalPosition      = localPosition;
         }
+    }
+
+    /// <summary>
+    /// Action types for waypoint execution — used by GCS Mission Planner.
+    /// </summary>
+    public enum WaypointActionType
+    {
+        FlyThrough   = 0,
+        Hover        = 1,
+        Takeoff      = 2,
+        Land         = 3,
+        TriggerPayload = 4,
+        ReturnToHome = 5
     }
 }
