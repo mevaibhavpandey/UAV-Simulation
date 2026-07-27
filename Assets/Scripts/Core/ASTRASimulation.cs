@@ -58,6 +58,16 @@ namespace ASTRA.UAV.Core
         private GameObject controlsPanel;
         private bool showControls = true;
 
+        // ─── Bengaluru Tactical Map ─────────────────────────────────────
+        private RectTransform mapDroneBlip;
+        private RectTransform mapDroneHeading;
+        private Text txtMapCoords;
+        private List<RectTransform> mapTrailDots = new List<RectTransform>();
+        private List<Vector3> flightTrailHistory = new List<Vector3>();
+        private float trailTimer = 0f;
+        private const double BENGALURU_LAT_BASE = 13.132700; // Yelahanka / BMSIT Campus Airspace
+        private const double BENGALURU_LON_BASE = 77.568300;
+
         // ─── Environment ─────────────────────────────────────────────────
         private float windStrength = 0f;
         private Vector3 windDirection = Vector3.right;
@@ -456,6 +466,56 @@ namespace ASTRA.UAV.Core
             MakeLabel(rightPanel.transform, "[M] Cycle Flight Modes", new Vector2(0, -158), new Vector2(220, 22), 11, new Color(1f, 0.85f, 0.3f));
             MakeLabel(rightPanel.transform, "[R] Return to Home", new Vector2(0, -178), new Vector2(220, 22), 11, new Color(1f, 0.6f, 0.3f));
 
+            // ── Real-Time Bengaluru Tactical GCS Map (Top-Right) ──
+            GameObject mapPanel = MakePanel(hudCanvas.transform, new Vector2(-260, -60), new Vector2(290, 310),
+                new Color(0f, 0.03f, 0.08f, 0.92f));
+            mapPanel.GetComponent<RectTransform>().anchorMin = new Vector2(1, 1);
+            mapPanel.GetComponent<RectTransform>().anchorMax = new Vector2(1, 1);
+            mapPanel.GetComponent<RectTransform>().pivot = new Vector2(1, 1);
+
+            MakeLabel(mapPanel.transform, "◈ BENGALURU GCS MAP", new Vector2(0, -10), new Vector2(270, 26), 13,
+                new Color(0.3f, 0.8f, 1f), FontStyle.Bold);
+            txtMapCoords = MakeLabel(mapPanel.transform, "13.132700° N  |  77.568300° E", new Vector2(0, -32), new Vector2(270, 20), 10,
+                new Color(0.7f, 0.9f, 0.7f));
+            AddDivider(mapPanel.transform, new Vector2(0, -48));
+
+            // Map radar container
+            GameObject radar = MakePanel(mapPanel.transform, new Vector2(0, -170), new Vector2(260, 220),
+                new Color(0.04f, 0.08f, 0.12f, 1f));
+
+            // Radar Concentric Circles
+            MakeRadarCircle(radar.transform, 160f, new Color(0.2f, 0.6f, 0.8f, 0.25f));
+            MakeRadarCircle(radar.transform, 100f, new Color(0.2f, 0.6f, 0.8f, 0.35f));
+            MakeRadarCircle(radar.transform, 40f,  new Color(0.2f, 0.6f, 0.8f, 0.45f));
+
+            // Cardinal Compass Labels
+            MakeLabel(radar.transform, "N", new Vector2(0, 95), new Vector2(20, 20), 11, new Color(0.3f, 1f, 0.5f), FontStyle.Bold);
+            MakeLabel(radar.transform, "S", new Vector2(0, -95), new Vector2(20, 20), 10, Color.gray);
+            MakeLabel(radar.transform, "E", new Vector2(115, 0), new Vector2(20, 20), 10, Color.gray);
+            MakeLabel(radar.transform, "W", new Vector2(-115, 0), new Vector2(20, 20), 10, Color.gray);
+
+            // Helipad Home Icon
+            GameObject homeIcon = MakePanel(radar.transform, Vector2.zero, new Vector2(12, 12), new Color(1f, 0.85f, 0.2f));
+            MakeLabel(homeIcon.transform, "H", Vector2.zero, new Vector2(12, 12), 9, Color.black, FontStyle.Bold);
+
+            // Runway Line Graphic
+            GameObject rwyGraphic = MakePanel(radar.transform, new Vector2(0, 30), new Vector2(10, 110), new Color(0.3f, 0.35f, 0.4f, 0.8f));
+
+            // Breadcrumb Trail Dots
+            mapTrailDots.Clear();
+            for (int i = 0; i < 15; i++)
+            {
+                GameObject dot = MakePanel(radar.transform, Vector2.zero, new Vector2(4, 4), new Color(0.2f, 0.9f, 0.4f, 0.6f - i * 0.035f));
+                mapTrailDots.Add(dot.GetComponent<RectTransform>());
+            }
+
+            // Drone Blip & Heading Cone Pointer
+            GameObject blip = MakePanel(radar.transform, Vector2.zero, new Vector2(12, 12), new Color(0.2f, 1f, 0.4f));
+            mapDroneBlip = blip.GetComponent<RectTransform>();
+
+            GameObject ptr = MakePanel(blip.transform, new Vector2(0, 8), new Vector2(4, 10), new Color(0.2f, 1f, 0.4f));
+            mapDroneHeading = ptr.GetComponent<RectTransform>();
+
             // ── Controls Panel (bottom) ──────────────────────
             controlsPanel = MakePanel(hudCanvas.transform, new Vector2(0, 10), new Vector2(940, 130),
                 new Color(0f, 0.03f, 0.08f, 0.88f));
@@ -815,6 +875,53 @@ namespace ASTRA.UAV.Core
                 if (messageClearTimer <= 0f && txtMessage != null)
                     txtMessage.text = "";
             }
+
+            // ── Real-Time Bengaluru GCS Tactical Map Update ──
+            if (droneRoot != null && mapDroneBlip != null)
+            {
+                Vector3 dronePos = droneRoot.transform.position;
+                double currentLat = BENGALURU_LAT_BASE + (dronePos.z * 0.000009);
+                double currentLon = BENGALURU_LON_BASE + (dronePos.x * 0.000009);
+                if (txtMapCoords != null)
+                {
+                    txtMapCoords.text = $"{currentLat:F6}° N  |  {currentLon:F6}° E";
+                }
+
+                // Map scale translation (center 0,0 is helipad home)
+                float mapX = Mathf.Clamp(dronePos.x * 1.5f, -110f, 110f);
+                float mapY = Mathf.Clamp(dronePos.z * 1.5f, -90f, 90f);
+                mapDroneBlip.anchoredPosition = new Vector2(mapX, mapY);
+
+                // Heading orientation
+                float droneYaw = droneRoot.transform.eulerAngles.y;
+                mapDroneHeading.localRotation = Quaternion.Euler(0, 0, -droneYaw);
+
+                // Flight trail recording
+                trailTimer += Time.deltaTime;
+                if (trailTimer >= 0.3f)
+                {
+                    trailTimer = 0f;
+                    flightTrailHistory.Insert(0, new Vector3(mapX, mapY, 0));
+                    if (flightTrailHistory.Count > mapTrailDots.Count)
+                    {
+                        flightTrailHistory.RemoveAt(flightTrailHistory.Count - 1);
+                    }
+                }
+
+                // Update breadcrumb dots
+                for (int i = 0; i < mapTrailDots.Count; i++)
+                {
+                    if (i < flightTrailHistory.Count)
+                    {
+                        mapTrailDots[i].gameObject.SetActive(true);
+                        mapTrailDots[i].anchoredPosition = flightTrailHistory[i];
+                    }
+                    else
+                    {
+                        mapTrailDots[i].gameObject.SetActive(false);
+                    }
+                }
+            }
         }
 
         #endregion
@@ -953,6 +1060,17 @@ namespace ASTRA.UAV.Core
                 if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", color);
                 r.material = mat;
             }
+        }
+
+        private void MakeRadarCircle(Transform parent, float size, Color color)
+        {
+            GameObject circle = new GameObject("RadarCircle");
+            circle.transform.SetParent(parent, false);
+            RectTransform rt = circle.AddComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(size, size);
+            rt.anchoredPosition = Vector2.zero;
+            Image img = circle.AddComponent<Image>();
+            img.color = color;
         }
 
         public void ShowMessage(string msg)
