@@ -68,6 +68,14 @@ namespace ASTRA.UAV.Core
         private const double BENGALURU_LAT_BASE = 13.132700; // Yelahanka / BMSIT Campus Airspace
         private const double BENGALURU_LON_BASE = 77.568300;
 
+        // ─── Butter-Smooth Flight Control Dampers ───────────────────────
+        private float _rawPitch = 0f;
+        private float _rawRoll = 0f;
+        private float _rawYaw = 0f;
+        private float smoothPitch = 0f;
+        private float smoothRoll = 0f;
+        private float smoothYaw = 0f;
+
         // ─── Environment ─────────────────────────────────────────────────
         private float windStrength = 0f;
         private Vector3 windDirection = Vector3.right;
@@ -99,14 +107,14 @@ namespace ASTRA.UAV.Core
 
         private void BuildEnvironment()
         {
-            // Ground
+            // Extended 3D Ground Terrain (Bengaluru Landscape)
             GameObject ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
             ground.name = "Ground";
-            ground.transform.localScale = new Vector3(100, 1, 100);
+            ground.transform.localScale = new Vector3(150, 1, 150); // 1.5 km landscape
             ground.transform.position = Vector3.zero;
             SetColor(ground, new Color(0.22f, 0.38f, 0.18f)); // Realistic field green
 
-            // Runway (long dark asphalt strip)
+            // Runway (Yelahanka AFS Runway)
             GameObject runway = GameObject.CreatePrimitive(PrimitiveType.Cube);
             runway.name = "Runway";
             runway.transform.position = new Vector3(0, 0.01f, 60f);
@@ -142,7 +150,7 @@ namespace ASTRA.UAV.Core
                 Destroy(hbar.GetComponent<Collider>());
             }
 
-            // GCS Building
+            // GCS Airbase Building
             BuildBuilding(new Vector3(40, 0, -20), new Vector3(20, 8, 12), new Color(0.4f, 0.42f, 0.45f), "GCS_Building");
 
             // Hangar
@@ -161,6 +169,50 @@ namespace ASTRA.UAV.Core
             towerTop.transform.position = new Vector3(35, 22, -15);
             towerTop.transform.localScale = new Vector3(7, 4, 7);
             SetColor(towerTop, new Color(0.3f, 0.6f, 0.8f, 0.5f));
+
+            // ── 3D Yelahanka Lake ─────────────────────────────────
+            GameObject lake = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            lake.name = "Yelahanka_Lake";
+            lake.transform.position = new Vector3(140f, 0.03f, 150f);
+            lake.transform.localScale = new Vector3(160f, 0.04f, 110f);
+            SetColor(lake, new Color(0.12f, 0.35f, 0.65f, 0.85f));
+
+            // ── 3D Bengaluru Tech Park Towers (Manyata & Hebbal Skyline) ──
+            BuildBuilding(new Vector3(180, 0, -60), new Vector3(25, 45, 25), new Color(0.25f, 0.35f, 0.45f), "TechPark_Tower_A");
+            BuildBuilding(new Vector3(220, 0, -20), new Vector3(30, 65, 30), new Color(0.20f, 0.30f, 0.40f), "TechPark_Tower_B");
+            BuildBuilding(new Vector3(190, 0, 40),  new Vector3(22, 50, 22), new Color(0.28f, 0.38f, 0.48f), "TechPark_Tower_C");
+            BuildBuilding(new Vector3(240, 0, 80),  new Vector3(35, 75, 35), new Color(0.18f, 0.28f, 0.38f), "TechPark_Tower_D");
+
+            // ── 3D BMSIT Campus & UAV Research Lab ────────────────
+            BuildBuilding(new Vector3(-110, 0, -70), new Vector3(40, 14, 25), new Color(0.50f, 0.45f, 0.40f), "BMSIT_Campus_Block");
+
+            // ── 3D Nandi Hills Elevation Range (Northern Backdrop) ──
+            for (int i = -3; i <= 3; i++)
+            {
+                GameObject hill = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                hill.name = $"Nandi_Hills_Peak_{i}";
+                float height = 45f + Mathf.Abs(i) * 12f + UnityEngine.Random.Range(5f, 15f);
+                hill.transform.position = new Vector3(i * 110f, height * 0.5f, 480f);
+                hill.transform.localScale = new Vector3(140f, height, 140f);
+                SetColor(hill, new Color(0.20f, 0.32f, 0.16f));
+            }
+
+            // ── 3D Outer Ring Road Elevated Bridge ─────────────────
+            GameObject highway = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            highway.name = "OuterRingRoad_ElevatedHighway";
+            highway.transform.position = new Vector3(-160f, 5f, 0f);
+            highway.transform.localScale = new Vector3(14f, 0.8f, 600f);
+            SetColor(highway, new Color(0.22f, 0.23f, 0.25f));
+
+            // Highway support pillars
+            for (int i = -5; i <= 5; i++)
+            {
+                GameObject pillar = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                pillar.name = "HighwayPillar";
+                pillar.transform.position = new Vector3(-160f, 2.5f, i * 50f);
+                pillar.transform.localScale = new Vector3(2.5f, 2.5f, 2.5f);
+                SetColor(pillar, new Color(0.45f, 0.47f, 0.50f));
+            }
 
             // Fence posts around perimeter
             for (int i = 0; i < 24; i++)
@@ -233,8 +285,8 @@ namespace ASTRA.UAV.Core
             droneRb = droneRoot.GetComponent<Rigidbody>();
             if (droneRb == null) droneRb = droneRoot.AddComponent<Rigidbody>();
             droneRb.mass = 2.8f;
-            droneRb.linearDamping = 0.5f;
-            droneRb.angularDamping = 3f;
+            droneRb.linearDamping = 1.8f;
+            droneRb.angularDamping = 4.0f;
             droneRb.useGravity = true;
             droneRb.interpolation = RigidbodyInterpolation.Interpolate;
             droneRb.collisionDetectionMode = CollisionDetectionMode.Continuous;
@@ -654,29 +706,19 @@ namespace ASTRA.UAV.Core
             }
 
             // ── PITCH (Up/Down arrows) ──────────────────────
-            float pitchInput = 0f;
-            if (Input.GetKey(KeyCode.UpArrow)) pitchInput = 1f;
-            if (Input.GetKey(KeyCode.DownArrow)) pitchInput = -1f;
+            _rawPitch = 0f;
+            if (Input.GetKey(KeyCode.UpArrow)) _rawPitch = 1f;
+            if (Input.GetKey(KeyCode.DownArrow)) _rawPitch = -1f;
 
             // ── ROLL (Left/Right arrows) ────────────────────
-            float rollInput = 0f;
-            if (Input.GetKey(KeyCode.RightArrow)) rollInput = 1f;
-            if (Input.GetKey(KeyCode.LeftArrow)) rollInput = -1f;
+            _rawRoll = 0f;
+            if (Input.GetKey(KeyCode.RightArrow)) _rawRoll = 1f;
+            if (Input.GetKey(KeyCode.LeftArrow)) _rawRoll = -1f;
 
             // ── YAW (Q/E) ───────────────────────────────────
-            float yawInput = 0f;
-            if (Input.GetKey(KeyCode.E)) yawInput = 1f;
-            if (Input.GetKey(KeyCode.Q)) yawInput = -1f;
-
-            // Apply yaw rotation
-            if (isFlying || currentAltitude > 0.1f)
-            {
-                droneRb.AddTorque(Vector3.up * yawInput * YAW_SPEED * Time.fixedDeltaTime, ForceMode.VelocityChange);
-            }
-
-            // Store inputs for FixedUpdate via fields
-            _pitchInput = pitchInput;
-            _rollInput = rollInput;
+            _rawYaw = 0f;
+            if (Input.GetKey(KeyCode.E)) _rawYaw = 1f;
+            if (Input.GetKey(KeyCode.Q)) _rawYaw = -1f;
 
             // ── CAMERA ──────────────────────────────────────
             if (Input.GetKeyDown(KeyCode.V)) cameraView = (cameraView + 1) % 4;
@@ -723,13 +765,15 @@ namespace ASTRA.UAV.Core
             }
         }
 
-        private float _pitchInput = 0f;
-        private float _rollInput = 0f;
-
         private void ApplyFlightPhysics()
         {
             currentAltitude = droneRoot.transform.position.y;
             float dt = Time.fixedDeltaTime;
+
+            // Low-Pass Filter Exponential Input Smoothing
+            smoothPitch = Mathf.Lerp(smoothPitch, _rawPitch, dt * 7.5f);
+            smoothRoll  = Mathf.Lerp(smoothRoll,  _rawRoll,  dt * 7.5f);
+            smoothYaw   = Mathf.Lerp(smoothYaw,   _rawYaw,   dt * 9.0f);
 
             if (currentMode == FlightMode.ReturnHome)
             {
@@ -738,18 +782,43 @@ namespace ASTRA.UAV.Core
                 homeDir.y = 0;
                 if (homeDir.magnitude > 1f)
                 {
-                    _pitchInput = Mathf.Clamp(homeDir.z * 0.2f, -1f, 1f);
-                    _rollInput = Mathf.Clamp(homeDir.x * 0.2f, -1f, 1f);
+                    Vector3 localHome = droneRoot.transform.InverseTransformDirection(homeDir.normalized);
+                    smoothPitch = Mathf.Clamp(localHome.z * 0.8f, -1f, 1f);
+                    smoothRoll  = Mathf.Clamp(localHome.x * 0.8f, -1f, 1f);
                 }
-                else { _pitchInput = 0; _rollInput = 0; }
+                else { smoothPitch = 0; smoothRoll = 0; }
             }
 
-            // ── Tilt for movement ───────────────────────────
-            float targetPitch = -_pitchInput * MAX_TILT;
-            float targetRoll = _rollInput * MAX_TILT;
+            // ── Heading-Relative Straight-Line Movement ──────
+            Vector3 fwd = droneRoot.transform.forward; fwd.y = 0; fwd.Normalize();
+            Vector3 rgt = droneRoot.transform.right;   rgt.y = 0; rgt.Normalize();
 
-            Quaternion targetRot = Quaternion.Euler(targetPitch, droneRoot.transform.eulerAngles.y, targetRoll);
-            droneRb.MoveRotation(Quaternion.Slerp(droneRoot.transform.rotation, targetRot, dt * 5f));
+            Vector3 targetHorizVel = (fwd * smoothPitch * 10.0f) + (rgt * smoothRoll * 10.0f);
+            Vector3 currentHorizVel = new Vector3(droneRb.linearVelocity.x, 0, droneRb.linearVelocity.z);
+
+            if (_rawPitch == 0f && _rawRoll == 0f)
+            {
+                // Active Auto-Braking & Hover Stabilization
+                droneRb.AddForce(-currentHorizVel * 4.5f, ForceMode.Force);
+            }
+            else
+            {
+                Vector3 velError = targetHorizVel - currentHorizVel;
+                droneRb.AddForce(velError * 4.0f, ForceMode.Force);
+            }
+
+            // ── Smooth Auto-Leveling Tilt ────────────────────
+            float targetPitchAngle = -smoothPitch * MAX_TILT;
+            float targetRollAngle  = smoothRoll * MAX_TILT;
+
+            Quaternion targetRot = Quaternion.Euler(targetPitchAngle, droneRoot.transform.eulerAngles.y, targetRollAngle);
+            droneRb.MoveRotation(Quaternion.Slerp(droneRoot.transform.rotation, targetRot, dt * 7.0f));
+
+            // ── Smooth Yaw Rotation ──────────────────────────
+            if (isFlying || currentAltitude > 0.1f)
+            {
+                droneRb.AddTorque(Vector3.up * smoothYaw * YAW_SPEED * dt, ForceMode.VelocityChange);
+            }
 
             // ── Altitude Hold auto-throttle ─────────────────
             if (currentMode == FlightMode.AltitudeHold || currentMode == FlightMode.ReturnHome)
