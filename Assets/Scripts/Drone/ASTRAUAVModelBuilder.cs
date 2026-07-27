@@ -25,6 +25,9 @@ namespace ASTRA.UAV.Drone
         [SerializeField] private Material propellerMaterial;
         [SerializeField] private Material xRayTransparentMaterial;
         [SerializeField] private Material hardwareHighlightMaterial;
+        [SerializeField] private Material glassMaterial;
+        [SerializeField] private Material ledRedMaterial;
+        [SerializeField] private Material ledGreenMaterial;
 
         [Header("Auto Build On Start")]
         [SerializeField] private bool buildOnAwake = true;
