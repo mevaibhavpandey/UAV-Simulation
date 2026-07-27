@@ -72,7 +72,7 @@ namespace ASTRA.UAV.Drone
         /// <summary>
         /// Gets the active flight controller instance.
         /// </summary>
-        public IDroneController Controller => flightController;
+        public DroneFlightController Controller => flightController;
 
         /// <summary>
         /// Gets the autonomous waypoint navigator module.
@@ -370,5 +370,6 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
 
 

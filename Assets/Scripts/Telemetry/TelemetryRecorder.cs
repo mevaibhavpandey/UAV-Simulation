@@ -20,7 +20,7 @@ namespace ASTRA.UAV.Telemetry
         [SerializeField] private bool isRecording = false;
         [SerializeField] private int recordedFrameCount = 0;
 
-        private readonly List<TelemetryData> recordedFrames = new List<TelemetryData>();
+        private readonly List<TelemetrySnapshot> recordedFrames = new List<TelemetrySnapshot>();
         private float lastRecordTime = 0f;
         private ITelemetryProvider telemetryProvider;
 
@@ -28,7 +28,7 @@ namespace ASTRA.UAV.Telemetry
         public bool IsRecording => isRecording;
 
         /// <summary>Gets read-only list of recorded telemetry frames.</summary>
-        public IReadOnlyList<TelemetryData> RecordedFrames => recordedFrames;
+        public IReadOnlyList<TelemetrySnapshot> RecordedFrames => recordedFrames;
 
         private void Awake()
         {
@@ -112,5 +112,6 @@ namespace ASTRA.UAV.Telemetry
         }
     }
 }
+
 
 

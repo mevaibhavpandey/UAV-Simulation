@@ -98,9 +98,10 @@ namespace ASTRA.UAV.Simulation
         /// <returns>True if an obstacle collision is detected.</returns>
         public bool SphereCastObstacles(Vector3 origin, float radius, Vector3 direction, float maxDistance, out RaycastHit hitInfo)
         {
-            return Physics.SphereCast(origin, radius, direction, out hitInfo, maxDistance, obstacleLayerMask);
+            return UnityEngine.Physics.SphereCast(origin, radius, direction, out hitInfo, maxDistance, obstacleLayerMask);
         }
     }
 }
+
 
 

@@ -29,7 +29,7 @@ namespace ASTRA.UAV.UI
         {
             if (timeScaleSlider != null)
             {
-                timeScaleSlider.minMargin = 0.1f;
+                timeScaleSlider.minValue = 0.1f;
                 timeScaleSlider.value = Time.timeScale;
                 timeScaleSlider.onValueChanged.AddListener(OnTimeScaleChanged);
                 OnTimeScaleChanged(timeScaleSlider.value);
@@ -80,5 +80,6 @@ namespace ASTRA.UAV.UI
         }
     }
 }
+
 
 
