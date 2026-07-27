@@ -106,7 +106,7 @@ namespace ASTRA.UAV.Telemetry
                 HeadingDegrees = currentData.HeadingDegrees,
                 GpsFix = GpsFixStatus.Fix3D,
                 SatellitesVisible = 14,
-                Battery = new BatteryStatus
+                Battery = new ASTRA.UAV.Interfaces.BatteryStatus
                 {
                     Voltage = currentData.BatteryVoltage,
                     CurrentAmps = currentData.MotorCurrentAmps,

@@ -46,7 +46,7 @@ namespace ASTRA.UAV.Mission
                 flightModeManager.SetFlightMode(FlightModeType.Auto);
             }
 
-            Debug.Log($"Autopilot Engaged: Target Pos {destinationPosition}, Speed {speed} m/s", LogCategory.Mission);
+            UAVLogger.Log($"Autopilot Engaged: Target Pos {destinationPosition}, Speed {speed} m/s", LogCategory.Mission);
         }
 
         /// <summary>
