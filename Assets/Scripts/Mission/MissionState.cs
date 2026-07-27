@@ -39,3 +39,5 @@ namespace ASTRA.UAV.Mission
         Aborted = 10
     }
 }
+
+

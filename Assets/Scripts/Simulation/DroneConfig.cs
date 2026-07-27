@@ -52,3 +52,5 @@ namespace ASTRA.UAV.Simulation
         public float MaxPayloadWeightKg => maxPayloadWeightKg;
     }
 }
+
+

@@ -60,7 +60,7 @@ namespace ASTRA.UAV.AI
                 {
                     activeStrategy = AvoidanceStrategy.Clear;
                     activeDetourPath.Clear();
-                    Logger.Log("Flight corridor clear. Restoring original mission trajectory.", LogCategory.AI);
+                    Debug.Log("Flight corridor clear. Restoring original mission trajectory.", LogCategory.AI);
                 }
                 return;
             }
@@ -114,3 +114,5 @@ namespace ASTRA.UAV.AI
         }
     }
 }
+
+

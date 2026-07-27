@@ -114,6 +114,11 @@ namespace ASTRA.UAV.Interfaces
         event Action<TelemetrySnapshot> OnTelemetryUpdated;
 
         /// <summary>
+        /// Gets the latest telemetry snapshot.
+        /// </summary>
+        TelemetrySnapshot CurrentTelemetry { get; }
+
+        /// <summary>
         /// Starts streaming telemetry updates.
         /// </summary>
         void StartStreaming();
@@ -129,4 +134,55 @@ namespace ASTRA.UAV.Interfaces
         /// <returns>Current telemetry snapshot.</returns>
         TelemetrySnapshot GetLatestSnapshot();
     }
+
+    /// <summary>
+    /// Alias struct for TelemetryData.
+    /// </summary>
+    [Serializable]
+    public struct TelemetryData
+    {
+        public float AltitudeMSL;
+        public float AltitudeAGL;
+        public float AirspeedMs;
+        public float GroundSpeedMs;
+        public float HeadingDegrees;
+        public float SignalRssi;
+        public float BatteryPercentage;
+        public float BatteryVoltage;
+        public float MotorCurrentAmps;
+        public BatteryStatus BatteryStatus;
+        public Vector3 Position;
+        public Quaternion Rotation;
+
+        public static TelemetryData CreateDefault()
+        {
+            return new TelemetryData
+            {
+                AltitudeMSL = 0f,
+                AltitudeAGL = 0f,
+                AirspeedMs = 0f,
+                GroundSpeedMs = 0f,
+                HeadingDegrees = 0f,
+                SignalRssi = 100f,
+                BatteryPercentage = 100f,
+                BatteryVoltage = 24.0f,
+                MotorCurrentAmps = 12.5f
+            };
+        }
+
+        public static implicit operator TelemetrySnapshot(TelemetryData d)
+        {
+            return new TelemetrySnapshot
+            {
+                AltitudeMSL = d.AltitudeMSL,
+                AltitudeAGL = d.AltitudeAGL,
+                HeadingDegrees = d.HeadingDegrees,
+                RssiPercentage = d.SignalRssi,
+                LocalPosition = d.Position,
+                Attitude = d.Rotation
+            };
+        }
+    }
 }
+
+

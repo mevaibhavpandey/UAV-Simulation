@@ -52,7 +52,7 @@ namespace ASTRA.UAV.Mission
             AddCheck("RGB/Depth Camera Payload", true, "Gimbal Centered & Streaming");
 
             bool allPassed = checklistItems.TrueForAll(item => item.isPassed);
-            Logger.Log($"Pre-Flight Checklist Completed. Result: {(allPassed ? "PASS" : "FAIL")}", LogCategory.Mission);
+            Debug.Log($"Pre-Flight Checklist Completed. Result: {(allPassed ? "PASS" : "FAIL")}", LogCategory.Mission);
             return allPassed;
         }
 
@@ -67,3 +67,5 @@ namespace ASTRA.UAV.Mission
         }
     }
 }
+
+

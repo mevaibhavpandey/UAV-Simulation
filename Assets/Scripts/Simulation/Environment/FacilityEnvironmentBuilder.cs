@@ -305,7 +305,7 @@ namespace ASTRA.UAV.Simulation.Environment
             sockPole.transform.localScale = new Vector3(0.2f, 3f, 0.2f);
             sockPole.GetComponent<Renderer>().sharedMaterial = concreteMaterial;
 
-            GameObject sockCloth = GameObject.CreatePrimitive(PrimitiveType.Cone != 0 ? PrimitiveType.Cylinder : PrimitiveType.Cylinder);
+            GameObject sockCloth = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             sockCloth.name = "WindsockCloth";
             sockCloth.transform.SetParent(sockPole.transform, false);
             sockCloth.transform.localPosition = new Vector3(0.8f, 0.8f, 0f);
@@ -339,3 +339,5 @@ namespace ASTRA.UAV.Simulation.Environment
         }
     }
 }
+
+

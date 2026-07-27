@@ -54,12 +54,12 @@ namespace ASTRA.UAV.Drone
             if (isEngineeringModeActive)
             {
                 SetRenderMode(EngineeringRenderMode.XRaySemiTransparent);
-                Logger.Log("Engineering Inspection Mode ACTIVATED.", LogCategory.UI);
+                Debug.Log("Engineering Inspection Mode ACTIVATED.", LogCategory.UI);
             }
             else
             {
                 SetRenderMode(EngineeringRenderMode.Normal);
-                Logger.Log("Engineering Inspection Mode DEACTIVATED. Returned to Flight View.", LogCategory.UI);
+                Debug.Log("Engineering Inspection Mode DEACTIVATED. Returned to Flight View.", LogCategory.UI);
             }
         }
 
@@ -87,3 +87,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

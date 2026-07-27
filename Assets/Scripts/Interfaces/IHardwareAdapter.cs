@@ -77,3 +77,5 @@ namespace ASTRA.UAV.Interfaces
         bool SendRawData(byte[] payload);
     }
 }
+
+

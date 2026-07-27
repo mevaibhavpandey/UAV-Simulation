@@ -160,10 +160,12 @@ namespace ASTRA.UAV.Managers
         private IEnumerator SingleStepRoutine(float stepDeltaTime)
         {
             Time.timeScale = 1.0f;
-            Physics.Simulate(stepDeltaTime);
+            UnityEngine.Physics.Simulate(stepDeltaTime);
             yield return new WaitForFixedUpdate();
             Time.timeScale = 0.0f;
             Debug.Log($"[SimulationManager] Stepped simulation by {stepDeltaTime}s.");
         }
     }
 }
+
+

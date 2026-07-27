@@ -23,7 +23,11 @@ namespace ASTRA.UAV.Utilities
         /// <summary>Artificial intelligence pathfinding and obstacle evasion.</summary>
         AI,
         /// <summary>User Interface and Flight HUD components.</summary>
-        UI
+        UI,
+        /// <summary>Simulation state and environmental parameters.</summary>
+        Simulation,
+        /// <summary>Environment and weather systems.</summary>
+        Environment
     }
 
     /// <summary>
@@ -136,3 +140,5 @@ namespace ASTRA.UAV.Utilities
         }
     }
 }
+
+

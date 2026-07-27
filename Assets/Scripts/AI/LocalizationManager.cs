@@ -57,7 +57,7 @@ namespace ASTRA.UAV.AI
             if (!isGPSAvailable)
             {
                 activeSource = LocalizationSource.Fused_Estimate;
-                Logger.LogWarning($"GPS FAILURE TRIGGERED [{failureType}]! Fallback to GPS-Denied Visual SLAM & VIO Fusion.", LogCategory.AI);
+                Debug.LogWarning($"GPS FAILURE TRIGGERED [{failureType}]! Fallback to GPS-Denied Visual SLAM & VIO Fusion.", LogCategory.AI);
 
                 EventBus.Publish(new GPSFailureEvent
                 {
@@ -73,7 +73,7 @@ namespace ASTRA.UAV.AI
             else
             {
                 activeSource = LocalizationSource.GPS_Primary;
-                Logger.Log("GPS Signal Restored. Returned to GPS Primary Navigation.", LogCategory.AI);
+                Debug.Log("GPS Signal Restored. Returned to GPS Primary Navigation.", LogCategory.AI);
 
                 if (GCSNotificationSystem.Instance != null)
                 {
@@ -91,3 +91,5 @@ namespace ASTRA.UAV.AI
         }
     }
 }
+
+

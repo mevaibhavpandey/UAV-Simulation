@@ -74,7 +74,9 @@ namespace ASTRA.UAV.Simulation.Environment
                 }
             }
 
-            Logger.Log($"Switched Facility Camera Mode to: {newMode}", LogCategory.Simulation);
+            Debug.Log($"Switched Facility Camera Mode to: {newMode}", LogCategory.Simulation);
         }
     }
 }
+
+

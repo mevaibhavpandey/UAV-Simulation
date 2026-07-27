@@ -112,7 +112,7 @@ namespace ASTRA.UAV.Simulation.Environment
                 RainIntensity = rainIntensity
             });
 
-            Logger.Log($"Weather state changed from {oldState} to {newState}", LogCategory.Simulation);
+            Debug.Log($"Weather state changed from {oldState} to {newState}", LogCategory.Simulation);
         }
 
         private void ApplyWeatherState(WeatherState state)
@@ -131,7 +131,7 @@ namespace ASTRA.UAV.Simulation.Environment
                     fogDensity = 0.008f;
                     currentWindSpeed = 5.0f;
                     RenderSettings.fog = true;
-                    RenderSettings.fogMode = FogMode.ExponentialWithDistance;
+                    RenderSettings.fogMode = FogMode.Exponential;
                     RenderSettings.fogDensity = fogDensity;
                     break;
 
@@ -193,3 +193,5 @@ namespace ASTRA.UAV.Simulation.Environment
         }
     }
 }
+
+

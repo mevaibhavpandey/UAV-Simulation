@@ -168,3 +168,5 @@ namespace ASTRA.UAV.Interfaces
         void SkipToWaypoint(int index);
     }
 }
+
+

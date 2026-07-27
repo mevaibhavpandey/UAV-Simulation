@@ -153,7 +153,7 @@ namespace ASTRA.UAV.Drone
                 Gyroscope = noisyGyro,
                 Magnetometer = magBody,
                 TemperatureCelsius = 35f,
-                Timestamp = Time.doubleValue
+                Timestamp = (double)Time.time
             };
 
             OnIMUUpdated?.Invoke(currentData);
@@ -171,3 +171,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

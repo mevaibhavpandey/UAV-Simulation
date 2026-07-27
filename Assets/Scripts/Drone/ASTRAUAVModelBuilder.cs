@@ -46,8 +46,8 @@ namespace ASTRA.UAV.Drone
             Rigidbody rb = GetComponent<Rigidbody>();
             if (rb == null) rb = gameObject.AddComponent<Rigidbody>();
             rb.mass = 2.8f; // 2.8 kg Tarot 650 All-Up-Weight
-            rb.drag = 0.1f;
-            rb.angularDrag = 2.0f;
+            rb.linearDamping = 0.1f;
+            rb.angularDamping = 2.0f;
 
             UAVExplodedView explodedView = GetOrAddComponent<UAVExplodedView>();
             UAVEngineeringMode engineeringMode = GetOrAddComponent<UAVEngineeringMode>();
@@ -267,3 +267,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

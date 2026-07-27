@@ -8,16 +8,16 @@ namespace ASTRA.UAV.Interfaces
     /// </summary>
     public enum CameraMode
     {
-        /// <summary>Chase/Follow perspective behind the drone.</summary>
         ThirdPersonFollow,
-        /// <summary>First-person perspective attached to onboard camera gimbal.</summary>
         FirstPersonGimbal,
-        /// <summary>Orbital inspection mode revolving around target.</summary>
         Orbit,
-        /// <summary>Free manual flight / debug camera mode.</summary>
         FreeLook,
-        /// <summary>Stationary ground surveillance perspective.</summary>
-        FixedGround
+        FixedGround,
+        ThirdPerson,
+        FPV,
+        TopView,
+        Free,
+        Cinematic
     }
 
     /// <summary>
@@ -82,3 +82,5 @@ namespace ASTRA.UAV.Interfaces
         void ResetCamera();
     }
 }
+
+

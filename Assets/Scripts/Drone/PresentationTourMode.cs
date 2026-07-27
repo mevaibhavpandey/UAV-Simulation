@@ -43,7 +43,7 @@ namespace ASTRA.UAV.Drone
                 GCSNotificationSystem.Instance.PostNotification("Presentation Tour Started", "Automated 360° Digital Twin Presentation Tour engaged.", NotificationType.Info);
             }
 
-            Logger.Log("Automated Presentation Tour Started.", LogCategory.UI);
+            Debug.Log("Automated Presentation Tour Started.", LogCategory.UI);
         }
 
         private void Update()
@@ -76,7 +76,9 @@ namespace ASTRA.UAV.Drone
             if (explodedView != null) explodedView.SetExplosionProgress(0f);
             if (EngineeringManager.Instance != null) EngineeringManager.Instance.SetRenderMode(EngineeringRenderMode.Normal);
 
-            Logger.Log("Presentation Tour Completed.", LogCategory.UI);
+            Debug.Log("Presentation Tour Completed.", LogCategory.UI);
         }
     }
 }
+
+

@@ -23,7 +23,7 @@ namespace ASTRA.UAV.Telemetry
         private float timer = 0f;
         private float uptime = 0f;
 
-        public TelemetryData CurrentTelemetry => currentData;
+        public TelemetrySnapshot CurrentTelemetry => currentSnapshot;
         public bool IsActive => isActive;
 
         // ITelemetryProvider Implementation
@@ -121,3 +121,5 @@ namespace ASTRA.UAV.Telemetry
         }
     }
 }
+
+

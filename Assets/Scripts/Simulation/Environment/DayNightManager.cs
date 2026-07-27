@@ -103,7 +103,7 @@ namespace ASTRA.UAV.Simulation.Environment
                 SunAngle = sunDirectionalLight != null ? sunDirectionalLight.transform.eulerAngles.x : 0f
             });
 
-            Logger.Log($"Day/Night state changed from {oldState} to {newState}", LogCategory.Simulation);
+            Debug.Log($"Day/Night state changed from {oldState} to {newState}", LogCategory.Simulation);
         }
 
         private void ApplyState(DayNightState state)
@@ -165,3 +165,5 @@ namespace ASTRA.UAV.Simulation.Environment
         }
     }
 }
+
+

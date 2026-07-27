@@ -78,7 +78,7 @@ namespace ASTRA.UAV.Mission
         {
             if (currentState != AutoNavMissionState.Idle && currentState != AutoNavMissionState.Completed)
             {
-                Logger.LogWarning("Autonomous mission already in progress!", LogCategory.Mission);
+                Debug.LogWarning("Autonomous mission already in progress!", LogCategory.Mission);
                 return false;
             }
 
@@ -106,7 +106,7 @@ namespace ASTRA.UAV.Mission
                     BatterySimulator batt = GetComponent<BatterySimulator>();
                     if (batt != null && batt.BatteryPercentage < 20f)
                     {
-                        Logger.LogError("Mission Validation Failed: Battery below 20% threshold!", LogCategory.Mission);
+                        Debug.LogError("Mission Validation Failed: Battery below 20% threshold!", LogCategory.Mission);
                         SetMissionState(AutoNavMissionState.Failed);
                         return;
                     }
@@ -213,7 +213,7 @@ namespace ASTRA.UAV.Mission
         private void SetMissionState(AutoNavMissionState newState)
         {
             currentState = newState;
-            Logger.Log($"Autonomous Mission State: {newState}", LogCategory.Mission);
+            Debug.Log($"Autonomous Mission State: {newState}", LogCategory.Mission);
         }
 
         private void CalculateMissionMetrics()
@@ -233,3 +233,5 @@ namespace ASTRA.UAV.Mission
         }
     }
 }
+
+

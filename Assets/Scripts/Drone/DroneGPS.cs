@@ -207,7 +207,7 @@ namespace ASTRA.UAV.Drone
                 CourseOverGroundDeg = cog,
                 SatellitesTracked = satelliteCount,
                 FixType = fixType,
-                Timestamp = Time.doubleValue
+                Timestamp = (double)Time.time
             };
 
             OnGPSUpdated?.Invoke(currentData);
@@ -225,3 +225,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

@@ -32,9 +32,12 @@ namespace ASTRA.UAV.Drone
 
         public bool IsArmed    => isArmed;
         public bool IsGrounded => transform.position.y < 0.3f;
+        public float ThrottleInput => throttleInput;
+        public FlightMode CurrentFlightMode => FlightMode.Manual;
 
         public bool Arm()   { isArmed = true;  return true; }
         public bool Disarm(){ isArmed = false; return true; }
+        public void SetActive(bool active) { if (active) Arm(); else Disarm(); }
 
         public void SetControlInputs(float pitch, float roll, float yaw, float throttle)
         {
@@ -63,6 +66,11 @@ namespace ASTRA.UAV.Drone
             outputs[2] = Mathf.Clamp01(throttleInput - pid.y + pid.x + pid.z);
             outputs[3] = Mathf.Clamp01(throttleInput - pid.y - pid.x - pid.z);
             return outputs;
+        }
+
+        public float[] CalculateMotorMixingOutputs(Quaternion attitude, Vector3 angularVelocity, float dt)
+        {
+            return CalculateMotorOutputs(attitude, angularVelocity, dt);
         }
 
         private Vector3 CalculatePID(Quaternion attitude, Vector3 angularVelocity, float dt)
@@ -105,3 +113,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

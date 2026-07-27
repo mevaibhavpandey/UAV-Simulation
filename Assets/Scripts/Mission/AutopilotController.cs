@@ -46,7 +46,7 @@ namespace ASTRA.UAV.Mission
                 flightModeManager.SetFlightMode(FlightModeType.Auto);
             }
 
-            Logger.Log($"Autopilot Engaged: Target Pos {destinationPosition}, Speed {speed} m/s", LogCategory.Mission);
+            Debug.Log($"Autopilot Engaged: Target Pos {destinationPosition}, Speed {speed} m/s", LogCategory.Mission);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace ASTRA.UAV.Mission
             {
                 flightModeManager.SetFlightMode(FlightModeType.Manual);
             }
-            Logger.Log("Autopilot Disengaged. Handed over to Manual Mode.", LogCategory.Mission);
+            Debug.Log("Autopilot Disengaged. Handed over to Manual Mode.", LogCategory.Mission);
         }
 
         private void FixedUpdate()
@@ -90,3 +90,5 @@ namespace ASTRA.UAV.Mission
         }
     }
 }
+
+

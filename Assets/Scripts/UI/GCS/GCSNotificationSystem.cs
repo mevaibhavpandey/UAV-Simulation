@@ -57,7 +57,9 @@ namespace ASTRA.UAV.UI.GCS
             activeNotifications.Add(card);
             if (activeNotifications.Count > 5) activeNotifications.RemoveAt(0); // Max 5 visible cards
 
-            Logger.Log($"[GCS Alert] [{type}] {title}: {message}", LogCategory.UI);
+            Debug.Log($"[GCS Alert] [{type}] {title}: {message}", LogCategory.UI);
         }
     }
 }
+
+

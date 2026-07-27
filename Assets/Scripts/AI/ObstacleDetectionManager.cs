@@ -57,7 +57,7 @@ namespace ASTRA.UAV.AI
             detectedObstacles.Clear();
 
             // Forward SphereCast along UAV orientation
-            RaycastHit[] hits = Physics.SphereCastAll(transform.position, sphereCastRadius, transform.forward, maxDetectionRange, obstacleLayerMask);
+            RaycastHit[] hits = UnityEngine.Physics.SphereCastAll(transform.position, sphereCastRadius, transform.forward, maxDetectionRange, obstacleLayerMask);
 
             int idCounter = 1;
             foreach (var hit in hits)
@@ -90,3 +90,5 @@ namespace ASTRA.UAV.AI
         }
     }
 }
+
+

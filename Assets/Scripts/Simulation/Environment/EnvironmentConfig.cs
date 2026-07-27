@@ -54,3 +54,5 @@ namespace ASTRA.UAV.Simulation.Environment
         public float cinematicWaypointTransitionDuration = 6.0f;
     }
 }
+
+

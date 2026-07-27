@@ -79,3 +79,5 @@ namespace ASTRA.UAV.Interfaces
         void SetFlightMode(FlightMode mode);
     }
 }
+
+

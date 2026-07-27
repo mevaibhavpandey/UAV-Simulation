@@ -353,7 +353,7 @@ namespace ASTRA.UAV.Drone
                 BatteryPercentage = BatteryPercentage,
                 BatteryVoltage = currentVoltage,
                 IsGrounded = Mathf.Abs(droneRigidbody.position.y) < 0.1f,
-                Timestamp = Time.doubleValue
+                Timestamp = (double)Time.time
             };
 
             OnTelemetryUpdated?.Invoke(stateData);
@@ -370,3 +370,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

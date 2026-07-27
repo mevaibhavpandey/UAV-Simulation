@@ -49,6 +49,11 @@ namespace ASTRA.UAV.Simulation
             currentAirDensity = config.BaseAirDensity;
         }
 
+        public void SetWindVector(Vector3 wind)
+        {
+            currentWindVector = wind;
+        }
+
         /// <summary>
         /// Computes current 3D wind velocity vector at a specified position in world space.
         /// </summary>
@@ -89,3 +94,5 @@ namespace ASTRA.UAV.Simulation
         }
     }
 }
+
+

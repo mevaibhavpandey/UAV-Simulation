@@ -34,9 +34,16 @@ namespace ASTRA.UAV.UI.GCS
             if (logs.Count > 100) logs.RemoveAt(0);
         }
 
+        public void SetFlightMode(object mode)
+        {
+            AddLog($"Flight Mode Changed: {mode}", "FlightMode");
+        }
+
         public void ClearLogs()
         {
             logs.Clear();
         }
     }
 }
+
+

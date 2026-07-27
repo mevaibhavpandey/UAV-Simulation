@@ -94,3 +94,5 @@ namespace ASTRA.UAV.Interfaces
         bool TryGetNearestObstacle(out ObstacleData obstacle);
     }
 }
+
+

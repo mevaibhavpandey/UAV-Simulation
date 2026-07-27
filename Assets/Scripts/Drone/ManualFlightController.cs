@@ -189,7 +189,7 @@ namespace ASTRA.UAV.Drone
                 float hoverCorrection = (altitudeError * hoverAltitudeKp) - (verticalVel * hoverAltitudeKd);
                 
                 // Hover base thrust = mass * g (~27.5N)
-                float hoverBaseThrust = rb.mass * Mathf.Abs(Physics.gravity.y);
+                float hoverBaseThrust = rb.mass * Mathf.Abs(UnityEngine.Physics.gravity.y);
                 totalThrustN = Mathf.Clamp(hoverBaseThrust + hoverCorrection, 0f, maxThrustPerMotor * 4.0f);
             }
             else
@@ -251,7 +251,7 @@ namespace ASTRA.UAV.Drone
             stateMachine.SetState(DroneOperationalState.EmergencyStop);
             throttleInput = 0f;
             isHoverActive = false;
-            Logger.LogWarning("EMERGENCY STOP TRIGGERED! Motor power cut.", LogCategory.Drone);
+            Debug.LogWarning("EMERGENCY STOP TRIGGERED! Motor power cut.", LogCategory.Drone);
         }
 
         private float AngleNormalizer(float angle)
@@ -261,3 +261,5 @@ namespace ASTRA.UAV.Drone
         }
     }
 }
+
+

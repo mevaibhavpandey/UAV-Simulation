@@ -69,7 +69,7 @@ namespace ASTRA.UAV.UI.GCS
                 holdDurationSeconds = hold,
                 action = WaypointActionType.Hover
             });
-            Logger.Log($"Added Waypoint WP{waypointQueue.Count} to Mission Plan.", LogCategory.Mission);
+            Debug.Log($"Added Waypoint WP{waypointQueue.Count} to Mission Plan.", LogCategory.Mission);
         }
 
         public void RemoveWaypoint(int index)
@@ -86,3 +86,5 @@ namespace ASTRA.UAV.UI.GCS
         }
     }
 }
+
+

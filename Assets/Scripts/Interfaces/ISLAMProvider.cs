@@ -104,3 +104,5 @@ namespace ASTRA.UAV.Interfaces
         void GetMapPoints(List<Vector3> outputPoints);
     }
 }
+
+
